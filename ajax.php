@@ -7,6 +7,14 @@
   if ($_GET["request"] == "news"){
     echo json_encode($api->news->get("br", "en")->entries);
   }
+  elseif ($_GET["request"] == "userdata"){
+
+    $api->user->id($_GET["user"]);
+    $data = $api->user->stats($_GET["platform"], "season5");
+    if ($data != "Invalid user id."){
+      echo json_encode($data);
+    }
+  }
   //echo $api->user->id("Ninja")->username;
 
   //echo "<br><br>";

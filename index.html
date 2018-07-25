@@ -43,7 +43,7 @@
       <div class="input-group search center">
         <input type="text" id="username" class="form-control" aria-label="Text input with dropdown button">
         <div class="input-group-append selector">
-          <button class="btn btn-outline-secondary dropdown-toggle" style="background-color: rgba(255, 255, 255, 0.5)" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Console</button>
+          <button id="platform" class="btn btn-outline-secondary dropdown-toggle" style="background-color: rgba(255, 255, 255, 0.5)" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Console</button>
           <div class="dropdown-menu">
             <a class="dropdown-item" onclick="selectOption(this)" href="#">PC</a>
             <a class="dropdown-item" onclick="selectOption(this)" href="#">PS4</a>
@@ -54,10 +54,36 @@
 
       <br><br>
 
-      <ul id="news-list" class="list-group center">
-          <li class="list-group-item">Loading...</li>
-      </ul>
+    <ul id="news-list" class="list-group center">
+      <li class="list-group-item">Loading...</li>
+    </ul>
 
+    <div class="card-group center">
+
+      <div class="card userdata">
+        <div class="card-body">
+          <h5 class="card-title">Solo</h5>
+          <p class="card-text">Muertes: 23
+              Partidas: 213
+            Kd : 23</p>
+        </div>
+      </div>
+
+      <div class="card userdata">
+        <div class="card-body">
+          <h5 class="card-title">Duo</h5>
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+      </div>
+
+      <div class="card userdata">
+        <div class="card-body">
+          <h5 class="card-title">Squad</h5>
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+      </div>
+
+    </div>
 
     <nav class="navbar fixed-bottom navbar-dark bg-dark justify-content-center">
       <a id="bottom" class="navbar-brand" style="font-size: 15px; color: white;">Fortnite is a registered trademark of Epic Games. | All data shown here are got from FortniteApi.com</a>
@@ -117,24 +143,37 @@
           $("#news-list").append(html);
         });
       }
-      requestNews();
+      //requestNews();
+
+      var firstSearch = false;
+      var lastPlatform = "";
+      var lastSearch = "";
 
       $("#username").on("keyup", function(event){
-        if (event.keyCode === 13){
-          console.log("Hola!");
+        let username = $("#username").val();
+        let pf = $("#platform").text().toLowerCase();
+        if (event.keyCode === 13 && (lastSearch != username || lastPlatform != pf) && pf != "console"){
+
+          if (!firstSearch) {
+            $("#news-list").remove();
+            firstSearch = true;
+            let newDiv = "<div></div>";
+          }
+
+          lastSearch = username;
+          lastPlatform = pf;
+
+          let userdata = $.ajax({
+            method: "GET",
+            url: "ajax.php",
+            data: { request: "userdata", user: username, platform: (pf == "xbox" && "xb1" || pf) }
+          })
+          userdata.done(function(returned){
+            console.log(returned);
+          })
+
         }
       })
-
-      /*input.addEventListener("keyup", function(event) {
-        // Cancel the default action, if needed
-        event.preventDefault();
-        // Number 13 is the "Enter" key on the keyboard
-        if (event.keyCode === 13) {
-          // Trigger the button element with a click
-          document.getElementById("myBtn").click();
-        }
-      });
-      */
     </script>
   </body>
 
