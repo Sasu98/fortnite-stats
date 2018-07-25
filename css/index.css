@@ -1,0 +1,21 @@
+body {
+  background-image: url("../assets/ftbg.jpg");
+  background-repeat: repeat;
+  background-attachment: fixed;
+  padding-top: 100px;
+  padding-bottom: 70px;
+}
+
+.center {
+  max-width: 50%;
+  min-width: 300px;
+  margin: auto;
+}
+
+.list-group-item {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+#bottom {
+  font-size: 1vh !important;
+}

@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Fortnite stats</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <!-- Own CSS -->
+    <link rel="stylesheet" href="css/index.css">
+  </head>
+
+  <body>
+
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">
+        <img src="assets/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+        Fortnite Stats
+      </a>
+      <!--
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Features</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Pricing</a>
+          </li>
+        </ul>
+      </div>
+    -->
+    </nav>
+
+    <center>
+
+      <img src="assets/home_label.png" style="max-width: 90%;"><br><br>
+      <div class="input-group search center">
+        <input type="text" id="username" class="form-control" aria-label="Text input with dropdown button">
+        <div class="input-group-append selector">
+          <button class="btn btn-outline-secondary dropdown-toggle" style="background-color: rgba(255, 255, 255, 0.5)" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Console</button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" onclick="selectOption(this)" href="#">PC</a>
+            <a class="dropdown-item" onclick="selectOption(this)" href="#">PS4</a>
+            <a class="dropdown-item" onclick="selectOption(this)" href="#">Xbox</a>
+          </div>
+        </div>
+      </div>
+
+      <br><br>
+
+      <ul id="news-list" class="list-group center">
+          <li class="list-group-item">Loading...</li>
+      </ul>
+
+
+    <nav class="navbar fixed-bottom navbar-dark bg-dark justify-content-center">
+      <a id="bottom" class="navbar-brand" style="font-size: 15px; color: white;">Fortnite is a registered trademark of Epic Games. | All data shown here are got from FortniteApi.com</a>
+    </nav>
+    <!-- Bootstrap javascript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <!---->
+
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!---->
+
+    <script>
+      //Function from https://stackoverflow.com/questions/847185/convert-a-unix-timestamp-to-time-in-javascript
+        function timeConverter(UNIX_timestamp){
+          var a = new Date(UNIX_timestamp * 1000);
+          var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+          var year = a.getFullYear();
+          var month = months[a.getMonth()];
+          var date = a.getDate();
+          var hour = a.getHours();
+          var min = a.getMinutes();
+          var sec = a.getSeconds();
+          var time = date + ' ' + month + ' ' + year ;
+          return time;
+        }
+      //
+
+      function selectOption(e){
+        let item = e.innerHTML;
+        e.parentElement.previousSibling.previousSibling.innerHTML = item;
+      }
+
+      function requestNews(){
+
+        let news = $.ajax({
+          method: "GET",
+          url: "ajax.php",
+          data: { request: "news" }
+        })
+
+        news.done(function( returned ) {
+          let data = JSON.parse(returned);
+          let html = "";
+          data.forEach(function(element){
+            html += '<li class="list-group-item">';
+              html += '<h6>' + element["title"] + '</h6>';
+              html += '<table style="display: block !important;"><tr>'
+              html += '<td><img id="newsimg" src="' + element["image"] + '" width="100" height="100"></td>';
+              html += '<td valign="top">' + element["body"] + " - <b>" + timeConverter(element["time"]) + '</b></td>';
+            html += '</tr></table></li>';
+          });
+
+          $("#news-list").empty();
+          $("#news-list").append(html);
+        });
+      }
+      requestNews();
+
+      $("#username").on("keyup", function(event){
+        if (event.keyCode === 13){
+          console.log("Hola!");
+        }
+      })
+
+      /*input.addEventListener("keyup", function(event) {
+        // Cancel the default action, if needed
+        event.preventDefault();
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.keyCode === 13) {
+          // Trigger the button element with a click
+          document.getElementById("myBtn").click();
+        }
+      });
+      */
+    </script>
+  </body>
+
+</html>
