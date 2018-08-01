@@ -56,34 +56,9 @@
 
     <ul id="news-list" class="list-group center">
       <li class="list-group-item">Loading...</li>
-    </ul>
+    </ul><br>
 
-    <div class="card-group center">
-
-      <div class="card userdata">
-        <div class="card-body">
-          <h5 class="card-title">Solo</h5>
-          <p class="card-text">Muertes: 23
-              Partidas: 213
-            Kd : 23</p>
-        </div>
-      </div>
-
-      <div class="card userdata">
-        <div class="card-body">
-          <h5 class="card-title">Duo</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        </div>
-      </div>
-
-      <div class="card userdata">
-        <div class="card-body">
-          <h5 class="card-title">Squad</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        </div>
-      </div>
-
-    </div>
+    <div id="Player-data" class="card-group center"></div>
 
     <nav class="navbar fixed-bottom navbar-dark bg-dark justify-content-center">
       <a id="bottom" class="navbar-brand" style="font-size: 15px; color: white;">Fortnite is a registered trademark of Epic Games. | All data shown here are got from FortniteApi.com</a>
@@ -98,83 +73,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <!---->
 
-    <script>
-      //Function from https://stackoverflow.com/questions/847185/convert-a-unix-timestamp-to-time-in-javascript
-        function timeConverter(UNIX_timestamp){
-          var a = new Date(UNIX_timestamp * 1000);
-          var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-          var year = a.getFullYear();
-          var month = months[a.getMonth()];
-          var date = a.getDate();
-          var hour = a.getHours();
-          var min = a.getMinutes();
-          var sec = a.getSeconds();
-          var time = date + ' ' + month + ' ' + year ;
-          return time;
-        }
-      //
-
-      function selectOption(e){
-        let item = e.innerHTML;
-        e.parentElement.previousSibling.previousSibling.innerHTML = item;
-      }
-
-      function requestNews(){
-
-        let news = $.ajax({
-          method: "GET",
-          url: "ajax.php",
-          data: { request: "news" }
-        })
-
-        news.done(function( returned ) {
-          let data = JSON.parse(returned);
-          let html = "";
-          data.forEach(function(element){
-            html += '<li class="list-group-item">';
-              html += '<h6>' + element["title"] + '</h6>';
-              html += '<table style="display: block !important;"><tr>'
-              html += '<td><img id="newsimg" src="' + element["image"] + '" width="100" height="100"></td>';
-              html += '<td valign="top">' + element["body"] + " - <b>" + timeConverter(element["time"]) + '</b></td>';
-            html += '</tr></table></li>';
-          });
-
-          $("#news-list").empty();
-          $("#news-list").append(html);
-        });
-      }
-      //requestNews();
-
-      var firstSearch = false;
-      var lastPlatform = "";
-      var lastSearch = "";
-
-      $("#username").on("keyup", function(event){
-        let username = $("#username").val();
-        let pf = $("#platform").text().toLowerCase();
-        if (event.keyCode === 13 && (lastSearch != username || lastPlatform != pf) && pf != "console"){
-
-          if (!firstSearch) {
-            $("#news-list").remove();
-            firstSearch = true;
-            let newDiv = "<div></div>";
-          }
-
-          lastSearch = username;
-          lastPlatform = pf;
-
-          let userdata = $.ajax({
-            method: "GET",
-            url: "ajax.php",
-            data: { request: "userdata", user: username, platform: (pf == "xbox" && "xb1" || pf) }
-          })
-          userdata.done(function(returned){
-            console.log(returned);
-          })
-
-        }
-      })
-    </script>
+    <script src="script.js"></script>
+    
   </body>
 
 </html>

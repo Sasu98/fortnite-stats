@@ -11,9 +11,10 @@
 
     $api->user->id($_GET["user"]);
     $data = $api->user->stats($_GET["platform"], "season5");
-    if ($data != "Invalid user id."){
+    if ($data != "Invalid user id." && $data != ""){
       echo json_encode($data);
     }
+    else echo "null";
   }
   //echo $api->user->id("Ninja")->username;
 
