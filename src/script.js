@@ -42,7 +42,7 @@ function requestNews(){
     $("#news-list").append(html);
   });
 }
-//requestNews();
+requestNews();
 
 var firstSearch = false;
 var lastPlatform = "";

@@ -2,7 +2,7 @@
   require("ftapi/Autoloader.php");
 
   $api = new FortniteClient;
-  $api->setKey("YOURAPIKEYFROM FORTNITEAPIKEY.COM");
+  $api->setKey("YOURAPIKEYFROM FORTNITEAPI.COM");
 
   if ($_GET["request"] == "news"){
     echo json_encode($api->news->get("br", "en")->entries);
